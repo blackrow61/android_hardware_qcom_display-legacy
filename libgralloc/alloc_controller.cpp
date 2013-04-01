@@ -47,6 +47,8 @@
 #define VENUS_BUFFER_SIZE(args...) 0
 #endif
 
+ANDROID_SINGLETON_STATIC_INSTANCE(qdutils::QCCompositionType);
+
 using namespace gralloc;
 using namespace qdutils;
 using android::sp;
