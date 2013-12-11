@@ -96,37 +96,15 @@ eDest Overlay::nextPipe(eMdpPipeType type, int dpy) {
 
     for(int i = 0; i < PipeBook::NUM_PIPES; i++) {
         //Match requested pipe type
-<<<<<<< HEAD
         if(type == OV_MDP_PIPE_ANY || type == getPipeType((eDest)i)) {
             //If the pipe is not allocated to any display or used by the
             //requesting display already in previous round.
             if((mPipeBook[i].mDisplay == PipeBook::DPY_UNUSED ||
                     mPipeBook[i].mDisplay == dpy) &&
-=======
-        if(type == OV_MDP_PIPE_ANY || type == PipeBook::getPipeType((eDest)i)) {
-            //Check if the pipe is used by the requested display
-            //already in previous round.
-            if(mPipeBook[i].mDisplay == dpy &&
->>>>>>> fef9206... Merge commit 'AU_LINUX_ANDROID_KK_2.7.1.04.04.00.017.002' into HEAD
                     PipeBook::isNotAllocated(i)) {
                 dest = (eDest)i;
                 PipeBook::setAllocation(i);
                 break;
-            }
-        }
-    }
-
-    if(dest == OV_INVALID) {
-        for(int i = 0; i < PipeBook::NUM_PIPES; i++) {
-            //Match requested pipe type
-            if(type == OV_MDP_PIPE_ANY || type == PipeBook::getPipeType((eDest)i)) {
-                //Check if the pipe is not allocated to any display
-                if(mPipeBook[i].mDisplay == DPY_UNUSED &&
-                   PipeBook::isNotAllocated(i)) {
-                    dest = (eDest)i;
-                    PipeBook::setAllocation(i);
-                    break;
-                }
             }
         }
     }

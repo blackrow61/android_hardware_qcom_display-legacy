@@ -165,45 +165,10 @@ int MDPComp::prepare(hwc_context_t *ctx, hwc_layer_1_t *layer,
             dst_h = hw_h;
         }
 
-<<<<<<< HEAD
         // Determine pipe to set based on pipe index
         ovutils::eDest dest = (ovutils::eDest)mdp_info.index;
 
         ovutils::eZorder zOrder = ovutils::ZORDER_0;
-=======
-bool MDPComp::isFrameDoable(hwc_context_t *ctx, hwc_display_contents_1_t* list)
-{
-    bool ret = true;
-    bool isSecureYUVLayer = false;
-    const int numAppLayers = ctx->listStats[mDpy].numAppLayers;
-
-    if(!isEnabled()) {
-        ALOGD_IF(isDebug(),"%s: MDP Comp. not enabled.", __FUNCTION__);
-        return false;
-    }
-
-    for(int i = 0; i < numAppLayers; ++i) {
-        hwc_layer_1_t* layer = &list->hwLayers[i];
-        private_handle_t *hnd = (private_handle_t *)layer->handle;
-        if(isYuvBuffer(hnd) && isSecureBuffer(hnd)){
-            isSecureYUVLayer = true;
-        }
-    }
-
-    /* Need a check for secureYUVlayers to avoid composing them
-       through FB during pause/resume events */
-    if(!isSecureYUVLayer &&
-       (ctx->dpyAttr[HWC_DISPLAY_EXTERNAL].isConfiguring ||
-        ctx->dpyAttr[HWC_DISPLAY_VIRTUAL].isConfiguring ||
-        ctx->dpyAttr[HWC_DISPLAY_EXTERNAL].isPause ||
-        ctx->dpyAttr[HWC_DISPLAY_VIRTUAL].isPause)) {
-        ALOGD_IF(isDebug(),"%s: External Display connection is pending",
-              __FUNCTION__);
-        ret = false;
-    }
-    return ret;
-}
->>>>>>> fef9206... Merge commit 'AU_LINUX_ANDROID_KK_2.7.1.04.04.00.017.002' into HEAD
 
         if(mdp_info.zOrder == 0 ) {
             zOrder = ovutils::ZORDER_0;
@@ -234,27 +199,9 @@ bool MDPComp::isFrameDoable(hwc_context_t *ctx, hwc_display_contents_1_t* list)
                     (qdutils::MDPVersion::getInstance().getMDPVersion() < qdutils::MDP_V4_2)))
             ovutils::setMdpFlags(mdpFlags,ovutils::OV_MDP_BACKEND_COMPOSITION);
 
-<<<<<<< HEAD
         if(layer->blending == HWC_BLENDING_PREMULT) {
             ovutils::setMdpFlags(mdpFlags,
                     ovutils::OV_MDP_BLEND_FG_PREMULT);
-=======
-        if(isYuvBuffer(hnd) ) {
-            if(isSecuring(ctx, layer)) {
-                ALOGD_IF(isDebug(), "%s: MDP securing is active", __FUNCTION__);
-                return false;
-            }
-            if((isSecureBuffer(hnd)) &&
-              (ctx->dpyAttr[HWC_DISPLAY_EXTERNAL].isConfiguring ||
-               ctx->dpyAttr[HWC_DISPLAY_VIRTUAL].isConfiguring ||
-               ctx->dpyAttr[HWC_DISPLAY_EXTERNAL].isPause ||
-               ctx->dpyAttr[HWC_DISPLAY_VIRTUAL].isPause)) {
-                ALOGD_IF(isDebug(), "%s: Fall back to VideoOnlyComposition for"
-                         "secure YUV layers during external isConfiguring",
-                         __FUNCTION__);
-                return false;
-            }
->>>>>>> fef9206... Merge commit 'AU_LINUX_ANDROID_KK_2.7.1.04.04.00.017.002' into HEAD
         }
 
         ovutils::eTransform orient = overlay::utils::OVERLAY_TRANSFORM_0 ;
@@ -450,27 +397,9 @@ bool MDPComp::setup(hwc_context_t* ctx, hwc_display_contents_1_t* list) {
     FrameInfo &currentFrame = sCurrentFrame;
     currentFrame.count = 0;
 
-<<<<<<< HEAD
     if(currentFrame.pipeLayer) {
         free(currentFrame.pipeLayer);
         currentFrame.pipeLayer = NULL;
-=======
-    //number of app layers exceeds MAX_NUM_APP_LAYERS fall back to GPU
-    //do not cache the information for next draw cycle.
-    if(numLayers > MAX_NUM_APP_LAYERS) {
-        mCachedFrame.updateCounts(mCurrentFrame);
-        ALOGD_IF(isDebug(), "%s: Number of App layers exceeded the limit ",
-                __FUNCTION__);
-        return -1;
-    }
-
-    //Hard conditions, if not met, cannot do MDP comp
-    if(!isFrameDoable(ctx, list)) {
-        ALOGD_IF( isDebug(),"%s: MDP Comp not possible for this frame",
-                __FUNCTION__);
-        reset(numLayers, list);
-        return -1;
->>>>>>> fef9206... Merge commit 'AU_LINUX_ANDROID_KK_2.7.1.04.04.00.017.002' into HEAD
     }
 
     if(!ctx) {

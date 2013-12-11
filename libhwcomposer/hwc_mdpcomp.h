@@ -91,22 +91,7 @@ private:
     static void unsetMDPCompLayerFlags(hwc_context_t* ctx,
                                        hwc_display_contents_1_t* list);
 
-<<<<<<< HEAD
     static void print_info(hwc_layer_1_t* layer);
-=======
-    /* checks for conditions where mdpcomp is not possible */
-    bool isFrameDoable(hwc_context_t *ctx, hwc_display_contents_1_t* list);
-    /* checks for conditions where RGB layers cannot be bypassed */
-    bool isFullFrameDoable(hwc_context_t *ctx, hwc_display_contents_1_t* list);
-    /* checks if full MDP comp can be done */
-    bool fullMDPComp(hwc_context_t *ctx, hwc_display_contents_1_t* list);
-    /* check if we can use layer cache to do at least partial MDP comp */
-    bool partialMDPComp(hwc_context_t *ctx, hwc_display_contents_1_t* list);
-    /* checks for conditions where only video can be bypassed */
-    bool isOnlyVideoDoable(hwc_context_t *ctx, hwc_display_contents_1_t* list);
-    /* checks for conditions where YUV layers cannot be bypassed */
-    bool isYUVDoable(hwc_context_t* ctx, hwc_layer_1_t* layer);
->>>>>>> fef9206... Merge commit 'AU_LINUX_ANDROID_KK_2.7.1.04.04.00.017.002' into HEAD
 
     /* configure's overlay pipes for the frame */
     static int  prepare(hwc_context_t *ctx, hwc_layer_1_t *layer,
